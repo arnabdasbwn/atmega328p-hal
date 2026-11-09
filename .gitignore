@@ -1,0 +1,17 @@
+/*
+!/.gitignore
+!/.gitattributes
+!/readme.md
+!/LICENSE.md
+!/CMakeLists.txt
+!/include/
+!/src/
+!/lib/
+!/boards/
+!/examples/
+!/tests/
+!/cmake/
+!/VERSION
+!/.clang-format
+!/.editorconfig
+!/.gitattributes

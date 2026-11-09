@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 3.20)
+project(avr_hal VERSION 0.1.0 LANGUAGES C)
+file(GLOB HAL_SOURCES CONFIGURE_DEPENDS src/*.c lib/drivers/*.c lib/filesystems/*.c)
+add_library(avr_hal STATIC ${HAL_SOURCES})
+target_include_directories(avr_hal PUBLIC include lib boards/uno_r3)
+target_compile_definitions(avr_hal PUBLIC F_CPU=16000000UL)
+target_compile_features(avr_hal PUBLIC c_std_99)
+target_compile_options(avr_hal PRIVATE -Wall -Wextra -Wconversion -Wshadow -ffunction-sections -fdata-sections)

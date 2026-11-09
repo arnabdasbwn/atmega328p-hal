@@ -1,0 +1,18 @@
+# XC8 AVR cross-toolchain; compiler and device-pack paths come from the process.
+# No compiler installation or global PATH change is performed during configure.
+set(CMAKE_SYSTEM_NAME Generic)
+set(CMAKE_SYSTEM_PROCESSOR avr)
+set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
+if(NOT DEFINED ENV{XC8_CC} OR NOT DEFINED ENV{AVR_DFP})
+    message(FATAL_ERROR "Set XC8_CC and AVR_DFP or use tools/cmake_build.py")
+endif()
+file(TO_CMAKE_PATH "$ENV{XC8_CC}" CMAKE_C_COMPILER)
+file(TO_CMAKE_PATH "$ENV{AVR_DFP}" AVR_PACK)
+get_filename_component(XC8_BIN "${CMAKE_C_COMPILER}" DIRECTORY)
+get_filename_component(XC8_ROOT "${XC8_BIN}" DIRECTORY)
+set(AVR_BIN "${XC8_ROOT}/avr/bin")
+find_program(CMAKE_AR NAMES avr-ar REQUIRED PATHS "${AVR_BIN}" NO_DEFAULT_PATH)
+find_program(CMAKE_RANLIB NAMES avr-ranlib REQUIRED PATHS "${AVR_BIN}" NO_DEFAULT_PATH)
+find_program(AVR_OBJCOPY NAMES avr-objcopy REQUIRED PATHS "${AVR_BIN}" NO_DEFAULT_PATH)
+find_program(AVR_SIZE NAMES avr-size REQUIRED PATHS "${AVR_BIN}" NO_DEFAULT_PATH)
+set(CMAKE_C_FLAGS_INIT "-mcpu=ATmega328P -mdfp=\"${AVR_PACK}\"")

@@ -1,0 +1,15 @@
+# Cross-compile the Uno course with an explicitly selected AVR GCC installation.
+# AVR_GCC is a process-local executable path, never a committed machine path.
+set(CMAKE_SYSTEM_NAME Generic)
+set(CMAKE_SYSTEM_PROCESSOR avr)
+set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
+if(NOT DEFINED ENV{AVR_GCC})
+    message(FATAL_ERROR "Set AVR_GCC or use the lab tools/cmake_build.py wrapper")
+endif()
+file(TO_CMAKE_PATH "$ENV{AVR_GCC}" CMAKE_C_COMPILER)
+get_filename_component(AVR_BIN "${CMAKE_C_COMPILER}" DIRECTORY)
+find_program(CMAKE_AR NAMES avr-ar REQUIRED PATHS "${AVR_BIN}" NO_DEFAULT_PATH)
+find_program(CMAKE_RANLIB NAMES avr-ranlib REQUIRED PATHS "${AVR_BIN}" NO_DEFAULT_PATH)
+find_program(AVR_OBJCOPY NAMES avr-objcopy REQUIRED PATHS "${AVR_BIN}" NO_DEFAULT_PATH)
+find_program(AVR_SIZE NAMES avr-size REQUIRED PATHS "${AVR_BIN}" NO_DEFAULT_PATH)
+set(CMAKE_C_FLAGS_INIT "-mmcu=atmega328p")
